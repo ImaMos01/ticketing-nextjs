@@ -1,13 +1,13 @@
 import TicketCard from "./(components)/TicketCard";
 
 interface TicketData {
-  title: String;
-  description: String;
-  category: String;
-  priority: Number;
-  progress: Number;
-  status: String;
-  active: Boolean;
+  title: string;
+  description: string;
+  category: string;
+  priority: number;
+  progress: number;
+  status: string;
+  active: boolean;
 }
 
 const getTickets = async () => {
@@ -22,11 +22,11 @@ const getTickets = async () => {
 };
 
 export default async function Home() {
-  const { tickets } = await getTickets();
+  const { tickets }: { tickets: TicketData[] } = await getTickets();
 
   //remove the duplicate results
-  const uniqueCategories = [
-    ...new Set(tickets?.map(({ category }: TicketData) => category)),
+  const uniqueCategories: string[] = [
+    ...new Set(tickets?.map(({ category }) => category)),
   ];
   return (
     <div className="p-5">
@@ -41,7 +41,9 @@ export default async function Home() {
                     (ticket: TicketData) => ticket.category === uniqueCategory
                   )
                   .map((tFiltered: TicketData, _index) => (
-                    <TicketCard key={_index} id={_index} ticket={tFiltered} />
+                    <div key={_index}>
+                      <TicketCard ticket={tFiltered} id={_index} />
+                    </div>
                   ))}
               </div>
             </div>
