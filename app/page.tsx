@@ -1,6 +1,7 @@
 import TicketCard from "./(components)/TicketCard";
 
 interface TicketData {
+  _id: string;
   title: string;
   description: string;
   category: string;
@@ -8,6 +9,7 @@ interface TicketData {
   progress: number;
   status: string;
   active: boolean;
+  createdAt: string;
 }
 
 const getTickets = async () => {
