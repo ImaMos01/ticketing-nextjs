@@ -3,7 +3,12 @@
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
-function TicketForm() {
+interface updateTicketData {
+  _id?:string;
+};
+
+function TicketForm({ticket}:updateTicketData) {
+  const EDITMODE = ticket._id === "new" ? false: true;
   const route = useRouter();
 
   const handleChange = (
@@ -24,18 +29,35 @@ function TicketForm() {
   //post the data
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const res = await fetch("/api/Tickets", {
-      method: "POST",
-      body: JSON.stringify({ formData }),
-      headers: {
-        "content-type": "application/json",
-      },
-    });
 
-    if (!res.ok) {
-      throw new Error("Failed to create Ticket.");
+    
+    if(EDITMODE){
+      //update ticket
+      const res = await fetch(`/api/Tickets/${ticket._id}`, {
+        method: "PUT",
+        body: JSON.stringify({ formData }),
+        headers: {
+          "content-type": "application/json",
+        },
+      });
+  
+      if (!res.ok) {
+        throw new Error("Failed to update Ticket.");
+      }
+    }else{
+      //create ticket
+      const res = await fetch("/api/Tickets", {
+        method: "POST",
+        body: JSON.stringify({ formData }),
+        headers: {
+          "content-type": "application/json",
+        },
+      });
+  
+      if (!res.ok) {
+        throw new Error("Failed to create Ticket.");
+      }
     }
-    console.log(JSON.stringify({ formData }));
     route.refresh();
     route.push("/");
   };
@@ -48,7 +70,14 @@ function TicketForm() {
     status: "not started",
     category: "hardware problem",
   };
-
+  if(EDITMODE){
+    startingTicketData["title"] = ticket.title;
+    startingTicketData["description"] = ticket.description;
+    startingTicketData["priority"] = ticket.priority;
+    startingTicketData["progress"] = ticket.progress;
+    startingTicketData["status"] = ticket.status;
+    startingTicketData["category"] = ticket.category;
+  }
   const [formData, setFormData] = useState(startingTicketData);
 
   return (
@@ -58,7 +87,7 @@ function TicketForm() {
         method="post"
         onSubmit={handleSubmit}
       >
-        <h3>Creat your Ticket</h3>
+        <h3>{EDITMODE ? "Update your Ticket" : "Create your Ticket"}</h3>
         <label>Title</label>
         <input
           id="title"
@@ -152,7 +181,7 @@ function TicketForm() {
           <option value="started">Started</option>
           <option value="done">Done</option>
         </select>
-        <input type="submit" className="btn" value="Create Ticket" />
+        <input type="submit" className="btn" value={EDITMODE ? "Update Ticket" : "Create Ticket"} />
       </form>
     </div>
   );

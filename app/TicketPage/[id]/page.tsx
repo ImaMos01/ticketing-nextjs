@@ -22,8 +22,13 @@ async function TicketPage({ params }: { params: { id: string } }) {
 
   if (EDITMODE) {
     updateTicketData = await getTicketById(params.id);
+    updateTicketData = updateTicketData.foundTicket;
+  } else{
+    updateTicketData ={
+      _id:"new",
+    };
   }
-  return <TicketForm />;
+  return <TicketForm ticket={updateTicketData} />;
 }
 
 export default TicketPage;
