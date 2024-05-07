@@ -3,13 +3,10 @@
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
-interface updateTicketData {
-  _id?:string;
-};
-
-function TicketForm({ticket}:updateTicketData) {
-  const EDITMODE = ticket._id === "new" ? false: true;
+function TicketForm({ ticket }: any) {
+  const EDITMODE = ticket._id == "new" ? false : true;
   const route = useRouter();
+  console.log(ticket, EDITMODE);
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -30,8 +27,7 @@ function TicketForm({ticket}:updateTicketData) {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    
-    if(EDITMODE){
+    if (EDITMODE) {
       //update ticket
       const res = await fetch(`/api/Tickets/${ticket._id}`, {
         method: "PUT",
@@ -40,11 +36,11 @@ function TicketForm({ticket}:updateTicketData) {
           "content-type": "application/json",
         },
       });
-  
+
       if (!res.ok) {
         throw new Error("Failed to update Ticket.");
       }
-    }else{
+    } else {
       //create ticket
       const res = await fetch("/api/Tickets", {
         method: "POST",
@@ -53,7 +49,7 @@ function TicketForm({ticket}:updateTicketData) {
           "content-type": "application/json",
         },
       });
-  
+
       if (!res.ok) {
         throw new Error("Failed to create Ticket.");
       }
@@ -70,13 +66,13 @@ function TicketForm({ticket}:updateTicketData) {
     status: "not started",
     category: "hardware problem",
   };
-  if(EDITMODE){
-    startingTicketData["title"] = ticket.title;
-    startingTicketData["description"] = ticket.description;
-    startingTicketData["priority"] = ticket.priority;
-    startingTicketData["progress"] = ticket.progress;
-    startingTicketData["status"] = ticket.status;
-    startingTicketData["category"] = ticket.category;
+  if (EDITMODE) {
+    startingTicketData["title"] = ticket?.title;
+    startingTicketData["description"] = ticket?.description;
+    startingTicketData["priority"] = ticket?.priority;
+    startingTicketData["progress"] = ticket?.progress;
+    startingTicketData["status"] = ticket?.status;
+    startingTicketData["category"] = ticket?.category;
   }
   const [formData, setFormData] = useState(startingTicketData);
 
@@ -181,7 +177,11 @@ function TicketForm({ticket}:updateTicketData) {
           <option value="started">Started</option>
           <option value="done">Done</option>
         </select>
-        <input type="submit" className="btn" value={EDITMODE ? "Update Ticket" : "Create Ticket"} />
+        <input
+          type="submit"
+          className="btn"
+          value={EDITMODE ? "Update Ticket" : "Create Ticket"}
+        />
       </form>
     </div>
   );
