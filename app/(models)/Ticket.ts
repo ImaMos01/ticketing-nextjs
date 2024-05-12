@@ -1,6 +1,12 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Schema, ConnectOptions } from "mongoose";
 
-mongoose.connect(process.env.MONGODB_URL);
+interface CustomConnectOptions extends ConnectOptions {
+  useNewUrlParser?: boolean;
+}
+
+mongoose.connect(`${process.env.MONGODB_URI}`, {
+  useNewUrlParser: true,
+} as CustomConnectOptions);
 mongoose.Promise = global.Promise;
 
 const ticketSchema = new Schema(

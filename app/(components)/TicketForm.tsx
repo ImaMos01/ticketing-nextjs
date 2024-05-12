@@ -6,7 +6,6 @@ import React, { useState } from "react";
 function TicketForm({ ticket }: any) {
   const EDITMODE = ticket._id == "new" ? false : true;
   const route = useRouter();
-  console.log(ticket, EDITMODE);
 
   const handleChange = (
     e: React.ChangeEvent<
