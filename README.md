@@ -20,7 +20,7 @@ Simple web page made with Nextjs and MongoDB for reporting computational problem
   </p>
 
 ## Getting Started
-# Run Nextjs with MongoDB locally
+### Run Nextjs with MongoDB locally
 
 To set up the Next.js app on your local machine:
 1. Go to the project directory and install the required dependencies:
@@ -39,7 +39,7 @@ npm run dev
 ```
 4. Make sure you have a running MongoDB instance and obtain the connection URI.
 
-# Run Nextjs with MongoDB using docker
+### Run Nextjs with MongoDB using docker
 To deploy the application using Docker:
 1. Run the Docker image using the provided Docker compose:
 
