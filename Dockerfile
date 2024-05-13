@@ -13,7 +13,7 @@ RUN npm install
 # Copy the rest of the source files into the image
 COPY . .
 
-ENV MONGODB_URI "mongodb://127.0.0.1:27017"
+ENV MONGODB_URI "mongodb://mongo:27017/TicketsDB"
 
 # Expose the port that the application listens on
 EXPOSE 3000
